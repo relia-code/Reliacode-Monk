@@ -37,6 +37,7 @@ local ActiveUnitPlates = MultiUnits:GetActiveUnitPlates()
 local IsIndoors, UnitIsUnit, UnitIsPlayer = IsIndoors, UnitIsUnit, UnitIsPlayer
 local pairs = pairs
 local GrappleWeaponIsReady = Action.GrappleWeaponIsReady
+local AuraIsValidByPhialofSerenity = Action.AuraIsValidByPhialofSerenity
 
 local Azerite = LibStub("AzeriteTraits")
 
@@ -161,6 +162,7 @@ Action[ACTION_CONST_MONK_WINDWALKER] = {
     DeathsDue = Action.Create({Type = "Spell", ID = 324128}),
     FaelineStomp = Action.Create({Type = "Spell", ID = 327104}),
     FallenOrder = Action.Create({Type = "Spell", ID = 326860}),
+    PhialOfSerenity = Create({Type = "Potion", ID = 177278}),
     -- Conduits
     CoordinatedOffensive = Action.Create({Type = "Spell", ID = 336598, Hidden = true}),
     -- Legendaries
@@ -404,6 +406,23 @@ local function SelfDefensives(unit)
                 return A.TouchofKarma
             end
         end
+    end
+
+    -- Phial of Serenity
+    local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+    if A.PhialofSerenity:IsReady(player) and Unit(player):HasDeBuffs(A.MindGamesDebuff.ID) == 0 and
+    PhialofSerenityOperator == "AND" then
+        if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then
+            return A.PhialOfSerenity
+        end
+    else
+        if A.PhialofSerenity:IsReady(player) and (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then
+            return A.PhialOfSerenity
+        end
+    end
+    -- Dispel
+    if A.PhialofSerenity:IsReady(player) and AuraIsValidByPhialofSerenity() then
+        return A.PhialOfSerenity
     end
 
     -- DampenHarm
