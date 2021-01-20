@@ -1,0 +1,21 @@
+{
+  "name": "reliacode-monk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build.js",
+  "scripts": {
+    "build": "npx build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/relia-code/Reliacode-Monk.git"
+  },
+  "author": "Reliacode",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/relia-code/Reliacode-Monk/issues"
+  },
+  "homepage": "https://github.com/relia-code/Reliacode-Monk#readme",
+  "dependencies": {}
+}
